@@ -25,21 +25,21 @@ spec:
         image: ENTER_IMAGE_TAG_NAME_HERE
         env:
         - name: TWILIO_ACCOUNT_SID
-          value: "ACa1e0fdb6421845b7983dff84c468c021"
+          value: "XXX"
         - name: TWILIO_AUTH_TOKEN
-          value: "a325c0501b63a93ffcb44696b7ac7538"
+          value: "XXX"
         - name: TWILIO_NUMBER
-          value: "+16464806555"
+          value: "+XXX"
         - name: LOCAL_TWILIO_NUMBER
-          value: "+61449588440"
+          value: "+XXXX"
         - name: ICS_SERVER
-          value: "oraclecloudau.myoracledemos.com"
+          value: "XXXX"
         - name: ICS_USERNAME
-          value: "weblogic"
+          value: "XXXX"
         - name: ICS_PASSWORD
-          value: "welcome1"
+          value: "XXXX"
         - name: MONGODB_SERVER
-          value: "localhost"
+          value: "XXX"
         - name: MONGODB_PORT
           value: "27017"
         - name: MONGODB_USERNAME
