@@ -32,10 +32,17 @@
     sudo apt-get install docker-ce -y
 
     #echo "############################################################################################################"
-    #echo "########### Installing and Configuring Node-Oracledb with Oracle DB Instant Client ##############################"
-    #  See: https://oracle.github.io/node-oracledb/ 
+    #echo "##################################### Installing MongoDB ###################################################"
+    #  See: https://redthunder.blog/2017/02/28/teaching-how-to-use-mongodb-and-expose-it-via-nodejs-apis/
 
-    sudo apt-get install libaio1 -y
+    sudo apt-get install mongodb -y
 
-    echo "export LD_LIBRARY_PATH=/vagrant/oradbInstantClient" >> /home/vagrant/.bashrc && echo "export TNS_ADMIN=/vagrant/oradbInstantClient/network/admin" >> /home/vagrant/.bashrc && bash
-    # See: https://oracle.github.io/odpi/doc/installation.html#linux
+    # mongo
+    
+    # use myTestDB
+
+    # db.usercollection.insert({ "name" : "Carlos", "mobile" : "+615550505", "msg" : "+Hello World"})
+
+    # db.usercollection.find().pretty()
+
+    # exit

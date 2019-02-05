@@ -1,0 +1,30 @@
+# Twilio Account SID - found on your dashboard
+export TWILIO_ACCOUNT_SID=XXX
+
+# Twilio Auth Token - found on your dashboard
+export TWILIO_AUTH_TOKEN=XXX
+
+# A Twilio number that you have purchased through the twilio.com web
+# interface or API
+export TWILIO_NUMBER=XXX
+
+# A Local Twilio number that you have verified through the twilio.com web
+# interface or API
+export LOCAL_TWILIO_NUMBER=XXX
+
+# ICS Details:
+export ICS_SERVER=XXX
+export ICS_USERNAME=XXX
+export ICS_PASSWORD=XXX
+
+
+export MONGODB_SERVER=localhost
+export MONGODB_PORT=27017
+export MONGODB_USERNAME=NA
+export MONGODB_PASSWORD=NA
+
+# Custom:
+export PROTOCOL=http
+
+# The port your web application will run on
+export PORT=3000

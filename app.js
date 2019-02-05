@@ -15,5 +15,6 @@ server.listen(config.port, function() {
      "], MongoDB Server is [" + config.MONGODB_SERVER +
      "], MongoDB Username is [" + config.MONGODB_USERNAME +
      "], MongoDB Password is [" + config.MONGODB_PASSWORD +
-     "], MongoDB Port is [" + config.MONGODB_PORT + "]");
+     "], MongoDB Port is [" + config.MONGODB_PORT +
+     "], PORT is [" + config.port + "]");
 });
