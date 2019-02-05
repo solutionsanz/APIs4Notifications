@@ -4,5 +4,5 @@
   kubectl delete -f kubernetes/apis4notifications-ing.yaml
   kubectl delete -f kubernetes/apis4notifications-svc.yaml
   kubectl delete -f kubernetes/apis4notifications-dpl.yaml
-  kubectl delete secret dhreg --namespace=apis4gifts
+  kubectl delete secret ocir-reg --namespace=apis4gifts
   kubectl delete namespace apis4notifications
