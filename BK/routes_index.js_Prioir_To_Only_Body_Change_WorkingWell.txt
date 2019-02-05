@@ -1,0 +1,183 @@
+var path = require('path');
+var express = require('express');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var twilio = require('twilio');
+var config = require("../config");
+
+//CRI change:
+var bodyParser = require('body-parser');
+
+// Create a Twilio REST API client for authenticated requests to Twilio
+var client = twilio(config.accountSid, config.authToken);
+
+// Configure application routes
+module.exports = function (app) {
+    // Set Jade as the default template engine
+    app.set('view engine', 'jade');
+
+    // Express static file middleware - serves up JS, CSS, and images from the
+    // "public" directory where we started our webapp process
+    app.use(express.static(path.join(process.cwd(), 'public')));
+
+    // Parse incoming request bodies as form-encoded
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+
+    // Use morgan for HTTP request logging
+    app.use(morgan('combined'));
+
+    // CRI change:    
+    app.use(bodyParser.json()); // Support for json encoded bodies 
+    app.use(bodyParser.urlencoded({ extended: true })); // Support for encoded bodies
+
+    // Home Page with Click to Call 
+    app.get('/', function (request, response) {
+        response.render('index');
+    });
+
+    // Handle an AJAX POST request to place an outbound call
+    app.post('/call', function (request, response) {
+        // This should be the publicly accessible URL for your application
+        // Here, we just use the host for the application making the request,
+        // but you can hard code it or use something different if need be
+        var url = 'http://' + request.headers.host + '/outbound';
+        console.log("URL is [" + url + "]");
+
+        // Place an outbound call to the user, using the TwiML instructions
+        // from the /outbound route
+        client.makeCall({
+            to: request.body.phoneNumber,
+            from: config.twilioNumber,
+            url: url
+        }, function (err, message) {
+            console.log(err);
+            if (err) {
+                response.status(500).send(err);
+            } else {
+                response.send({
+                    message: 'Thank you! We will be calling you shortly.'
+                });
+            }
+        });
+    });
+
+    // Return TwiML instuctions for the outbound call
+    app.post('/outbound', function (request, response) {
+        // We could use twilio.TwimlResponse, but Jade works too - here's how
+        // we would render a TwiML (XML) response using Jade
+        response.type('text/xml');
+        response.render('outbound', { msg: 'Hello, Callan. I am calling you from the Oracle Cloud. I know everything about you. I can see everything...I am watching you.' });
+    });
+
+    /** Extend origonal code to allow generic texts and APIs.  */
+
+    // Handle an AJAX POST request to place an outbound call
+    app.post('/voicecall/:to', function (request, response) {
+
+        var to = request.params.to;
+        // Although is not the best design, "msg" via query paramenter in URL is the first option due to simplicity.
+        // For those API enthusiastics out there, I also implemented it via a body request...
+        var msg = request.query.msg;
+        if (msg == null || msg == undefined) {
+
+            // msg was NOT set via query, so we will ensure it was set via the POST body.
+            msg = request.body.msg;
+
+            console.log("Received message [" + msg + "]");
+
+        }
+        if (msg == null || msg == undefined) {
+            console.log("Message was not defined. Bad request found, thus nothing to do...");
+            response.sendStatus(400);//Bad request...
+            return;
+        }
+
+
+        // This should be the publicly accessible URL for your application
+        // Here, we just use the host for the application making the request,
+        // but you can hard code it or use something different if need be
+        var url = 'http://' + request.headers.host + '/voiceoutbound' + '?msg=' + encodeURI(msg);
+        console.log("URL is [" + url + "], to is [" + to + "], msg is [" + msg + "]");
+
+        // Place an outbound call to the user, using the TwiML instructions
+        // from the /outbound route
+        client.makeCall({
+            to: to,
+            from: config.twilioNumber,
+            url: url
+        }, function (err, message) {
+            console.log(err);
+            if (err) {
+                response.sendStatus(500).send(err);
+            } else {
+                response.send({
+                    message: 'Thank you! We will be calling you shortly.'
+                });
+            }
+        });
+    });
+
+    // Return TwiML instuctions for the outbound call
+    app.post('/voiceoutbound', function (request, response) {
+
+        var msgTTS = request.query.msg;
+        console.log("Message in /voiceoutbound call is [" + msgTTS + "]");
+
+        // We could use twilio.TwimlResponse, but Jade works too - here's how
+        // we would render a TwiML (XML) response using Jade
+        response.type('text/xml');
+        response.render('outbound', { msg: msgTTS });
+    });
+
+
+    // Handle an AJAX POST request to place an outbound call
+    app.post('/sms/:to', function (request, response) {
+
+        var to = request.params.to;
+        // Although is not the best design, "msg" via query paramenter in URL is the first option due to simplicity.
+        // For those API enthusiastics out there, I also implemented it via a body request...
+        var msg = request.query.msg;
+        if (msg == null || msg == undefined) {
+
+            // msg was NOT set via query, so we will ensure it was set via the POST body.
+            msg = request.body.msg;
+
+            console.log("Received message [" + msg + "]");
+
+        }
+        if (msg == null || msg == undefined) {
+            console.log("Message was not defined. Bad request found, thus nothing to do...");
+            response.sendStatus(400);//Bad request...
+            return;
+        }
+
+
+        // Create options to send the message
+        var options = {
+            to: to,
+            from: config.twilioNumber,
+            body: msg
+        };
+
+        // Send the message!
+        client.sendMessage(options, function (err, response) {
+            if (err) {
+                // Just log it for now
+                console.error(err);
+                response.sendStatus(500);//Internal Server error...
+                return;
+            } else {
+                console.log('Message [' + msg + '] sent to [' + to + ']');    
+            }
+        });
+
+        // Return successfully Accepted call.
+        response.sendStatus(202).end();
+
+    });
+
+};
+
+

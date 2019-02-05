@@ -1,0 +1,30 @@
+# Twilio Account SID - found on your dashboard
+accountSid=XXX
+
+# Twilio Auth Token - found on your dashboard
+authToken=XXX
+
+# A Twilio number that you have purchased through the twilio.com web
+# interface or API
+twilioNumber=XXX
+
+# A Local Twilio number that you have verified through the twilio.com web
+# interface or API
+localTwilioNumber=XXX
+
+# ICS Details:
+ICS_SERVER=XXX
+ICS_USERNAME=XXX
+ICS_PASSWORD=XXX
+
+
+MONGODB_SERVER=XXX
+MONGODB_PORT=27017
+MONGODB_USERNAME=XXX
+MONGODB_PASSWORD=XXX
+
+# Custom:
+PROTOCOL=http
+
+# The port your web application will run on
+port=3000

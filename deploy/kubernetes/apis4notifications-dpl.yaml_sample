@@ -1,0 +1,46 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: apis4notificationsdeployment
+  labels:
+    app: apis4notifications
+    microservice: app
+  namespace: apis4notifications
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apis4notifications
+      microservice: app
+  template:
+    metadata:
+      labels:
+        app: apis4notifications
+        microservice: app
+        version: v0.0.1
+    spec:
+      containers:
+      - name: apis4notifications
+        image: ENTER_IMAGE_TAG_NAME_HERE
+        env:
+        - name: API_GW_ENABLED
+          value: "true"
+        - name: API_GW_SERVER
+          value: "lbaas.oracleau.cloud"
+        - name: API_GW_BASEURL
+          value: "/apis4notifications"
+        - name: tenancyId
+          value: "ocid1.tenancy.oc1..aaaaaaaa7gxxxxx..."
+        - name: compartmentId
+          value: "ocid1.compartment.oc1..aaaaaaxxxxx..."
+        - name: apiUserId
+          value: "ocid1.user.oc1..aaaaaaaapgr7xhxxxxx..."
+        - name: publicKeyFingerprint
+          value: "9e:29:39:59:2b:b1:c9:4f:b5:bxxxxx..."
+        - name: pathToKey
+          value: "./ssh/id_rsa_pri.pem"          
+        - name: PORT
+          value: "3000"                    
+        ports:
+        - containerPort: 3000

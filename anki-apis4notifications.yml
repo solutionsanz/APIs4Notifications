@@ -1,0 +1,121 @@
+swagger: "2.0"
+info:
+  description: "This project aims to provide a platform to send Notiofications via different channels including SMS and Voice"
+  version: "2.1"
+  title: "APIs 4 Notifications"
+  #termsOfService: "http://apismadeeasy.cloud/terms"
+  contact:
+    email: "carlos.rodriguez.iturria@oracle.com"
+  #license:
+  #  name: "Apache 2.0"
+  #  url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+#basePath: "/"
+#host: "localhost:3000"
+basePath: "/api/notifications"
+host: "apipdev.oracleau.cloud"
+tags:
+- name: "Notifications"
+  description: "Contact records for a given Account in Salesforce to be stored, retrieved, updated or deleted."
+  externalDocs:
+    description: "Find out more"
+    url: "http://apismadeeasy.cloud"
+- name: "Accounts"
+  description: "Account records in Salesforce to be stored, retrieved, updated or deleted."
+  externalDocs:
+    description: "Find out more"
+    url: "http://apismadeeasy.cloud"    
+schemes:
+- "https"
+#- "http"
+security:
+  - My-API-Key: []
+paths:
+  /sms:
+    post:
+      tags:
+      - "Send SMS Notification"
+      summary: "Sends a Notification to one or more Contacts by SMS"
+      description: "Sends a Notification to one or more Contacts by SMS."
+      operationId: "sendSMSNotification"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "XXX"
+        required: true
+        schema:
+          properties:
+            Notification:
+              type: "array"
+              items:
+                $ref: "#/definitions/Contact"
+                  
+      responses:
+        200:
+          description: "Sends a Voice Notification to one or more Targets based on a provided text message (Text To Speech)."
+          schema:
+            $ref: '#/definitions/ResponseMessage'
+            
+  /voicecall:
+    post:
+      tags:
+      - "Send Voice Notification"
+      summary: "Sends a Voicemail Notification to one or more Contacts"
+      description: "Sends a Voicemail Notification to one or more Contacts."
+      operationId: "sendVoiceNotification"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Message Contact record to be created."
+        required: true
+        schema:
+          properties:
+            Notification:
+              type: "array"
+              items:
+                $ref: "#/definitions/Contact"
+                
+      responses:
+        200:
+          description: "Sends a Voice Notification to one or more Targets based on a provided text message (Text To Speech)."
+          schema:
+            $ref: '#/definitions/ResponseMessage'
+            
+securityDefinitions:
+  My-API-Key:
+    type: "apiKey"
+    name: "x-api-Key"
+    in: "header"
+definitions:
+  Contact:
+    type: "object"
+    required:
+    - "to"
+    - "message"
+    properties:
+      to:
+        type: "string"
+        example: "61414500600"
+      message:
+        type: "string"
+        example: "this is a test message"
+  ResponseMessage:
+    type: "object"
+    required:
+    - "message"    
+    properties:
+      message:
+        type: "string"
+        example: "this is a sample response"
+externalDocs:
+  description: "Find out more about our APIs"
+  url: "http://apisMadeEasy.cloud"
+  
+  

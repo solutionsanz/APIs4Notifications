@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apis4notificationsservice
+  namespace: apis4notifications
+spec:
+  ports:
+  - name: http
+    targetPort: 3000
+    port: 3000
+  selector:
+    app: apis4notifications
+    microservice: app
