@@ -22,7 +22,7 @@
     "twilio": "^1.6.0",
     "morgan": "^1.2.3",
     "jade": "1.7.x",    
-    "mongodb": "^2.2.24",
+    "mongodb": "^3.6.1",
     "monk": "^4.0.0"
   },
   "devDependencies": {
